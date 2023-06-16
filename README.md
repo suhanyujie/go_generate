@@ -12,4 +12,5 @@
 * 从 0 构建自己的脚手架/CLI知识体系（万字） https://zhuanlan.zhihu.com/p/455036374
 * go prompt lib 
   * https://www.golinuxcloud.com/golang-prompt
+  * https://github.com/manifoldco/promptui
 
