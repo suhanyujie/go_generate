@@ -13,4 +13,5 @@
 * go prompt lib 
   * https://www.golinuxcloud.com/golang-prompt
   * https://github.com/manifoldco/promptui
+* 使用Yeoman快速搭建项目脚手架 https://juejin.cn/post/7011437760812679181
 
