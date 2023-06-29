@@ -2,7 +2,7 @@ package service
 
 import (
 	"errors"
-	"fmt"
+	"log"
 
 	"github.com/manifoldco/promptui"
 )
@@ -17,10 +17,11 @@ import (
 */
 
 type Prompt struct {
-	Type    string
-	Name    string
-	Message string
-	Default string
+	Type    string `json:"type"`
+	Name    string `json:"name"`
+	Message string `json:"message"`
+	Default string `json:"default"`
+	Value   string `json:"value"`
 }
 
 func NewPrompt(typ, name, msg, defaultVal string) *Prompt {
@@ -34,29 +35,37 @@ func NewPrompt(typ, name, msg, defaultVal string) *Prompt {
 }
 
 func (_this *Prompt) Run() {
-	validate := func(input string) error {
-		if len(input) < 1 {
-			return errors.New("Invalid input, please enter a string")
-		}
-		return nil
-	}
-
-	templates := &promptui.PromptTemplates{
-		Prompt:  "{{ . }} ",
-		Valid:   "{{ . | blue }} ",
-		Invalid: "{{ . | yellow }} ",
-		Success: "{{ . | bold }} ",
-	}
-
-	prompt := promptui.Prompt{
-		Label:     "Enter a float: ",
-		Templates: templates,
-		Validate:  validate,
-	}
+	prompt := _this.RenderPromptByType("")
 	result, err := prompt.Run()
 	if err != nil {
-		fmt.Printf("Prompt failed %v\n", err)
+		log.Printf("Run Prompt failed err:%v", err)
 		return
 	}
-	_this.Name = result
+	_this.Value = result
+}
+
+// RenderPromptByType 主要类型有：prompt、select、confirm、password
+func (_this *Prompt) RenderPromptByType(typ string) promptui.Prompt {
+	var ret promptui.Prompt
+	switch typ {
+	default:
+		validate := func(input string) error {
+			if len(input) < 1 {
+				return errors.New("invalid input, please enter a value")
+			}
+			return nil
+		}
+		templates := &promptui.PromptTemplates{
+			Prompt:  "{{ . }} ",
+			Valid:   "{{ . | blue }} ",
+			Invalid: "{{ . | yellow }} ",
+			Success: "{{ . | bold }} ",
+		}
+		ret = promptui.Prompt{
+			Label:     _this.Message,
+			Templates: templates,
+			Validate:  validate,
+		}
+	}
+	return ret
 }

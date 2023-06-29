@@ -3,6 +3,9 @@ package service
 // GoProGen go 项目生成器
 type GoProGen struct {
 	srcPath, dstPath string
+	promptList       []*Prompt
+
+	projectName string
 }
 
 // NewGoProGen 实例化项目生成器
@@ -11,6 +14,9 @@ func NewGoProGen(srcPath, dstPath string) any {
 		srcPath: srcPath,
 		dstPath: dstPath,
 	}
+	promptList := PromptBuiltInConfigList
+	ret.promptList = promptList
+
 	return ret
 }
 
@@ -20,7 +26,13 @@ func (g *GoProGen) Initializing() {
 }
 
 func (g *GoProGen) Prompting() {
-
+	for _, prompt := range g.promptList {
+		prompt.Run()
+		switch prompt.Name {
+		case "name":
+			g.projectName = prompt.Value
+		}
+	}
 	return
 }
 
