@@ -14,4 +14,5 @@
   * https://www.golinuxcloud.com/golang-prompt
   * https://github.com/manifoldco/promptui
 * 使用Yeoman快速搭建项目脚手架 https://juejin.cn/post/7011437760812679181
+* 一个 go 应用脚手架 https://github.com/go-nunu/nunu
 
